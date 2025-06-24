@@ -28,7 +28,7 @@ namespace Core.UI
 
         private void OnClickRankBtn()
         {
-
+            
         }
 
         private void OnClickExitBtn()
