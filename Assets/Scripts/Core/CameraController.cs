@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
@@ -12,6 +14,21 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        UpdateCamera();
+    }
+
+    /// <summary>
+    /// 마우스 우측 버튼을 클릭해야 카메라 이동이 활성화 된다.
+    /// UI Btn과의 상호작용에 카메라가 임의로 이동하는 것을 방지하기 위함.
+    /// </summary>
+    void UpdateCamera()
+    {
+        if (!Input.GetMouseButton(1))
+        {
+            return;
+        }
+
         // 마우스 위치 추적 부터 진행한다.
         Vector2 mousePos = Input.mousePosition;
         float screenWidth = Screen.width;

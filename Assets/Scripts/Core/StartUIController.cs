@@ -5,7 +5,7 @@ using Core.Util;
 using UnityEngine.UI;
 
 
-namespace Core.UI
+namespace Core.StartUI
 {
     public class StartUIController : MonoBehaviour
     {
