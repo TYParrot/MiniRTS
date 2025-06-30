@@ -10,4 +10,13 @@ public class UnitBaseStatsData : ScriptableObject
     public int Damage;
     public int MoveSpeed;
     public int AttackSpeed;
+
+    public ResourceCost cost;
+}
+
+[System.Serializable]
+public class ResourceCost
+{
+    public int clay;
+    public int gravel;
 }

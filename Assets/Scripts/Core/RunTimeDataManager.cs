@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,17 +8,35 @@ namespace Core.Data
 {
     public class RunTimeDataManager
     {
-        public static RunTimeDataManager Instance;
-
-        void Awake()
+        private static RunTimeDataManager _instance;
+        public static RunTimeDataManager Instance
         {
-            Instance = this;
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new RunTimeDataManager();
+                }
+                return _instance;
+            }
         }
 
-        void Start()
+        /// <summary>
+        /// 인스턴스 생성 시 Init 메소드 자동 호출
+        /// </summary>
+        private RunTimeDataManager()
         {
             Init();
         }
+
+        #region Callback
+
+        public Action<int> OnClayChanged;
+        public Action<int> OnGravelChanged;
+
+        #endregion
+        
+        #region var
 
         /// <summary>
         /// 변수 초기화
@@ -29,12 +48,18 @@ namespace Core.Data
         }
 
         /// <summary>
+        /// 외부 접근 변수와 내부 저장 변수를 분리(Stack Over flow 방지)
+        /// </summary>
+        private int _clay;
+        private int _gravel;
+
+        /// <summary>
         /// 외부로는 clay 수치 반환, 내부로는 업데이트
         /// </summary>
         public int clay
         {
-            get { return clay; }
-            private set { clay = value; }
+            get { return _clay; }
+            private set { _clay = value; }
         }
 
         /// <summary>
@@ -42,8 +67,8 @@ namespace Core.Data
         /// </summary>
         public int gravel
         {
-            get { return gravel; }
-            private set { gravel = value; }
+            get { return _gravel; }
+            private set { _gravel = value; }
         }
 
         /// <summary>
@@ -53,6 +78,7 @@ namespace Core.Data
         public void UpdateClayResource(int amount)
         {
             clay += amount;
+            OnClayChanged?.Invoke(_clay);
         }
 
         /// <summary>
@@ -62,6 +88,8 @@ namespace Core.Data
         public void UpdateGravelResource(int amount)
         {
             gravel += amount;
+            OnGravelChanged?.Invoke(_gravel);
         }
+        #endregion
     }
 }

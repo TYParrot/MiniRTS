@@ -17,3 +17,6 @@ MonoBehaviour:
   Damage: 3
   MoveSpeed: 2
   AttackSpeed: 2
+  cost:
+    clay: 20
+    gravel: 5

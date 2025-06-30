@@ -13,6 +13,8 @@ namespace Core.GameUI
         void Start()
         {
             resource = RunTimeDataManager.Instance;
+            resource.OnClayChanged += UpdateClayText;
+            resource.OnGravelChanged += UpdateGravelText;
         }
 
         #region resource
@@ -55,10 +57,104 @@ namespace Core.GameUI
         [SerializeField] private Text clayText;
         [SerializeField] private Text gravelText;
 
-        // 수치에 변화가 생겼을 때만 업데이트하도록 하면 좋을 듯.
+        /// <summary>
+        /// RunTimeDataManager에서 값이 바뀌면 Action으로 Invoke
+        /// </summary>
+        void UpdateClayText(int clay)
+        {
+            clayText.text = $"점토: {clay.ToString()}";
+        }
+
+        /// <summary>
+        /// RunTimeDataManager에서 값이 바뀌면 Action으로 Invoke
+        /// </summary>
+        void UpdateGravelText(int gravel)
+        {
+            gravelText.text = $"자갈: {gravel.ToString()}";
+        }
         #endregion
 
         #region Generation
+
+        [SerializeField]
+        private UnitBaseStatsData unit01;
+        [SerializeField]
+        private UnitBaseStatsData unit02;
+        [Header("Warning")]
+        public GameObject warningText;
+        private Coroutine warningCoroutine;
+        private float warningCoolTime = 2.0f;
+        [Header("Success")]
+        public GameObject successText;
+        private Coroutine successCoroutine;
+        private float successCoolTime = 0.8f;
+
+        public void GenerateBtn01()
+        {
+            TrySpawnUnit(unit01);
+        }
+
+        public void GenerationBtn02()
+        {
+            TrySpawnUnit(unit02);
+        }
+
+        void TrySpawnUnit(UnitBaseStatsData unit)
+        {
+            if (resource.clay >= unit.cost.clay && resource.gravel >= unit.cost.gravel)
+            {
+                // spawnManager에게 소환 여부 보내기.
+                // 소환 성공 여부 반환 받고, 차감하기.
+                resource.UpdateClayResource(-unit.cost.clay);
+                resource.UpdateGravelResource(-unit.cost.gravel);
+
+                if (successCoroutine != null)
+                {
+                    StopCoroutine(successCoroutine);
+                }
+
+                successCoroutine = StartCoroutine(SuccessCoolTime(successText, successCoolTime));
+
+            }
+            else
+            {
+                // 반복 생성 가능하도록
+                if (warningCoroutine == null)
+                {
+                    warningCoroutine = StartCoroutine(WarningCoolTime(warningText, warningCoolTime));
+                }
+            }
+        }
+
+        /// <summary>
+        /// WarningPanel을 주어진 시간만큼 활성화.
+        /// 확장 할거면 해당 이벤트를 관리하는 매니저를 별도로 빼기.
+        /// </summary>
+        /// <param name="= "panel"></parm>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        IEnumerator WarningCoolTime(GameObject panel, float time)
+        {
+            panel.SetActive(true);
+            yield return new WaitForSeconds(time);
+            panel.SetActive(false);
+            warningCoroutine = null;
+
+        }
+
+        /// <summary>
+        /// SuccessPanel을 주어진 시간만큼 활성화.
+        /// </summary>
+        /// <param name="panel"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        IEnumerator SuccessCoolTime(GameObject panel, float time)
+        {
+            panel.SetActive(true);
+            yield return new WaitForSeconds(time);
+            panel.SetActive(false);
+            successCoroutine = null;
+        }
 
         #endregion
     }
