@@ -20,3 +20,4 @@ MonoBehaviour:
   cost:
     clay: 20
     gravel: 5
+  unitPrefab: {fileID: 3171889597338619612, guid: 81fbdf99bedf2d2459748090267d0e15, type: 3}

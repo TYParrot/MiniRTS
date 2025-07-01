@@ -12,6 +12,8 @@ public class UnitBaseStatsData : ScriptableObject
     public int AttackSpeed;
 
     public ResourceCost cost;
+
+    public GameObject unitPrefab;
 }
 
 [System.Serializable]

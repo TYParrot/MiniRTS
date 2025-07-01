@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Core.Data;
 using UnityEngine.UI;
+using Core.Unit;
+
 
 namespace Core.GameUI
 {
     public class GameMapUIManager : MonoBehaviour
     {
         private RunTimeDataManager resource;
+        [SerializeField]
+        private SpawnManager spawn;
 
         void Start()
         {
@@ -99,22 +103,39 @@ namespace Core.GameUI
             TrySpawnUnit(unit02);
         }
 
+        /// <summary>
+        /// unit의 생성 여부와 최종 생성 요청까지 관리
+        /// 성공 시, 성공 패널 활성화
+        /// 실패 시, 실패 패널 활성화
+        /// </summary>
+        /// <param name="unit"></param>
         void TrySpawnUnit(UnitBaseStatsData unit)
         {
             if (resource.clay >= unit.cost.clay && resource.gravel >= unit.cost.gravel)
             {
-                // spawnManager에게 소환 여부 보내기.
-                // 소환 성공 여부 반환 받고, 차감하기.
-                resource.UpdateClayResource(-unit.cost.clay);
-                resource.UpdateGravelResource(-unit.cost.gravel);
-
-                if (successCoroutine != null)
+                Debug.Log("자원 충분");
+                //스폰 성공 시, 자원 차감 및 성공 패널 표기
+                if (spawn.SpawnUnit(unit.unitPrefab))
                 {
-                    StopCoroutine(successCoroutine);
+                    resource.UpdateClayResource(-unit.cost.clay);
+                    resource.UpdateGravelResource(-unit.cost.gravel);
+
+                    if (successCoroutine != null)
+                    {
+                        StopCoroutine(successCoroutine);
+                    }
+
+                    successCoroutine = StartCoroutine(SuccessCoolTime(successText, successCoolTime));
+                    warningCoroutine = null;
                 }
-
-                successCoroutine = StartCoroutine(SuccessCoolTime(successText, successCoolTime));
-
+                else
+                {
+                    // 반복 생성 가능하도록
+                    if (warningCoroutine == null)
+                    {
+                        warningCoroutine = StartCoroutine(WarningCoolTime(warningText, warningCoolTime));
+                    }
+                }
             }
             else
             {

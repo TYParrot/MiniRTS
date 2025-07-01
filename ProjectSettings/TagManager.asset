@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Unit
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - Obstacles
   - Base
   - Effect
-  - 
+  - Unit
   - 
   - 
   - 
@@ -46,4 +47,7 @@ TagManager:
     locked: 0
   - name: Effect
     uniqueID: 328900807
+    locked: 0
+  - name: Unit
+    uniqueID: 1297856251
     locked: 0
