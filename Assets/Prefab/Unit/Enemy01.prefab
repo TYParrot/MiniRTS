@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3571290689456046644}
   - component: {fileID: 5046777701619998375}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Enemy01
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,7 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8502196330880653050}
   - component: {fileID: 7526726594385141525}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: RTS_Tiles_02_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2361675553716657385}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

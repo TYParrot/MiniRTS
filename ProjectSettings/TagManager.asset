@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Unit
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -19,8 +20,8 @@ TagManager:
   - Base
   - Effect
   - Unit
-  - 
-  - 
+  - Enemy
+  - Mouse
   - 
   - 
   - 
@@ -50,4 +51,7 @@ TagManager:
     locked: 0
   - name: Unit
     uniqueID: 1297856251
+    locked: 0
+  - name: Mouse
+    uniqueID: 1777165781
     locked: 0

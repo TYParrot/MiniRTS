@@ -113,7 +113,6 @@ namespace Core.GameUI
         {
             if (resource.clay >= unit.cost.clay && resource.gravel >= unit.cost.gravel)
             {
-                Debug.Log("자원 충분");
                 //스폰 성공 시, 자원 차감 및 성공 패널 표기
                 if (spawn.SpawnUnit(unit.unitPrefab))
                 {

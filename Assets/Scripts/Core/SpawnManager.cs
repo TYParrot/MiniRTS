@@ -11,12 +11,10 @@ namespace Core.Unit
         [SerializeField]
         private GameObject unitParent;
 
-        private List<UnitController> unitList;
+        private List<UnitController> unitList = new List<UnitController>();
+        // 외부 참조용
+        public IReadOnlyList<UnitController> units => unitList; 
 
-        public void Start()
-        {
-            unitList = new List<UnitController>();
-        }
 
         /// <summary>
         /// GameMapUIManager에서 요구하는 unitPrefab을 생성
