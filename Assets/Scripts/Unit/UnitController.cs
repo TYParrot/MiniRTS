@@ -17,6 +17,9 @@ public class UnitController : MonoBehaviour
     private int attackSpeed;
     #endregion
 
+    private Vector3 basicScale;
+    private Vector3? targetPos;
+
     private void Awake()
     {
         unitMarker = transform.Find("Marker").gameObject;
@@ -24,7 +27,33 @@ public class UnitController : MonoBehaviour
 
     void Start()
     {
-        StatsInit();
+        Init();
+    }
+
+    void Update()
+    {
+        // Unit의 이동 제어
+        if (targetPos.HasValue)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPos.Value, Time.deltaTime * moveSpeed);
+
+            // 이동 방향에 따른 반전 효과
+            // 이동 상태에 따른 애니메이션 제어를 원하면 else 구문까지 추가하여 제어
+            if (transform.position.x > targetPos.Value.x)
+            {
+                Vector3 newScale = new Vector3(basicScale.x * -1, basicScale.y, basicScale.z);
+                transform.localScale = newScale;
+            }
+            else if (transform.position.x < targetPos.Value.x)
+            {
+                transform.localScale = basicScale;
+            }
+
+            if (transform.position == targetPos)
+            {
+                targetPos = null;
+            }
+        }
     }
 
     //선택-Marker 활성화
@@ -38,22 +67,25 @@ public class UnitController : MonoBehaviour
     {
         unitMarker.SetActive(false);
     }
-    
+
     /// <summary>
-    /// Unit의 Status를 초기화한다.
+    /// Unit의 Status & 관련 변수 초기화
     /// </summary>
-    void StatsInit()
+    void Init()
     {
         hp = unitStats.Hp;
         defendence = unitStats.Defendence;
         damage = unitStats.Damage;
         moveSpeed = unitStats.MoveSpeed;
         attackSpeed = unitStats.AttackSpeed;
+        
+        basicScale = transform.localScale;
     }
 
-    //Unit이 이동(일단은 순간이동임..)
+    //Unit이 이동할 수 있도록 targetPos를 업데이트
     public void MoveTo(Vector2 end)
     {
-        transform.position = new Vector3(end.x, end.y, 0);
+        targetPos = new Vector3(end.x, end.y, 0);
+        
     }
 }

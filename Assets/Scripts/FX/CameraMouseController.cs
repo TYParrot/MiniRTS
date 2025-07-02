@@ -9,10 +9,17 @@ public class CameraMouseController : MonoBehaviour
     #region Camera
     [Header("Camera")]
     public float moveSpeed = 5f;
-    public Vector2 minBounds;
-    public Vector2 maxBounds;
+    private Vector2 minBounds;
+    private Vector2 maxBounds;
     private float edgeSensitivity = 0.8f;   //중앙에서 얼마나 벗어나야 움직이는지
     private Camera mainCamera;
+    //해상도 보정을 위한 변수
+    [SerializeField] private float mapMinX;
+    [SerializeField] private float mapMaxX;
+    [SerializeField] private float mapMinY;
+    [SerializeField] private float mapMaxY;
+    private float prevWidth;
+    private float prevHeight;
     #endregion
 
     #region Select
@@ -46,11 +53,20 @@ public class CameraMouseController : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
+
+        //시작 전에 카메라 비율 보정
+        RecalculateCameraBounds();
     }
 
 
     void Update()
     {
+        // 해상도 달라지면, 카메라 영역을 다시 계산
+        if (Screen.width != prevWidth || Screen.height != prevHeight)
+        {
+            RecalculateCameraBounds();
+        }
+
         UpdateCamera();
         Drag();
         ClickUnit();
@@ -104,6 +120,27 @@ public class CameraMouseController : MonoBehaviour
     }
 
     /// <summary>
+    /// 해상도가 달라지면 카메라가 실제로 볼 수 있는 영역을 다시 계산
+    /// </summary>
+    void RecalculateCameraBounds()
+    {
+        prevHeight = Screen.height;
+        prevWidth = Screen.width;
+
+        //orthographicSize는 카메라의 중심에서 위쪽으로 보이는 거리
+        float camHeight = mainCamera.orthographicSize * 2f;
+        //orthographic 카메라는 종횡비(aspect ratio)에 따라 가로가 얼마나 보이는지 달라진다.
+        //이를 구하기 위하여 화면의 종횡비부터 구하고, 이를 camHeight와 구하여 전체 가로 길이를 구하는 것.
+        float camWidth = camHeight * ((float)Screen.width / Screen.height);
+
+        minBounds.x = mapMinX + camWidth / 2f;
+        maxBounds.x = mapMaxX - camWidth / 2f;
+
+        minBounds.y = mapMinY + camHeight / 2f;
+        maxBounds.y = mapMaxY - camHeight / 2f;
+    }
+
+    /// <summary>
     /// 영역 내에 유닛이 있으면 해당 유닛들을 모두 Select 처리
     /// </summary>
     void Drag()
@@ -150,6 +187,7 @@ public class CameraMouseController : MonoBehaviour
         }
     }
 
+    //유닛 선택을 제어
     void ClickUnit()
     {
         if (Input.GetMouseButtonDown(0))
