@@ -53,11 +53,9 @@ public class CameraMouseController : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
-
-        //시작 전에 카메라 비율 보정
-        RecalculateCameraBounds();
+        prevHeight = 0;
+        prevWidth = 0;
     }
-
 
     void Update()
     {
@@ -65,6 +63,8 @@ public class CameraMouseController : MonoBehaviour
         if (Screen.width != prevWidth || Screen.height != prevHeight)
         {
             RecalculateCameraBounds();
+            prevHeight = Screen.height;
+            prevWidth = Screen.width;
         }
 
         UpdateCamera();
@@ -129,6 +129,7 @@ public class CameraMouseController : MonoBehaviour
 
         //orthographicSize는 카메라의 중심에서 위쪽으로 보이는 거리
         float camHeight = mainCamera.orthographicSize * 2f;
+        
         //orthographic 카메라는 종횡비(aspect ratio)에 따라 가로가 얼마나 보이는지 달라진다.
         //이를 구하기 위하여 화면의 종횡비부터 구하고, 이를 camHeight와 구하여 전체 가로 길이를 구하는 것.
         float camWidth = camHeight * ((float)Screen.width / Screen.height);
@@ -138,6 +139,12 @@ public class CameraMouseController : MonoBehaviour
 
         minBounds.y = mapMinY + camHeight / 2f;
         maxBounds.y = mapMaxY - camHeight / 2f;
+
+        //카메라가 범위 밖이면 재적용
+        Vector3 pos = mainCamera.transform.position;
+        pos.x = Mathf.Clamp(pos.x, minBounds.x, maxBounds.x);
+        pos.y = Mathf.Clamp(pos.y, minBounds.y, maxBounds.y);
+        mainCamera.transform.position = pos;
     }
 
     /// <summary>

@@ -5,7 +5,11 @@ using Core.Path;
 
 public class Grid : MonoBehaviour
 {
-    public Vector2 worldSize;
+    [SerializeField] private float mapMinX;
+    [SerializeField] private float mapMaxX;
+    [SerializeField] private float mapMinY;
+    [SerializeField] private float mapMaxY;
+
     public float nodeSize;
     [SerializeField] Node[,] myNode;
     int nodeCountX;
@@ -19,8 +23,8 @@ public class Grid : MonoBehaviour
     {
         //노드가 커지면 개수가 작고, 정확도는 낮지만 계산이 빨라지고
         //노드가 작아지면 개수가 많아져서 정확도는 올라가지만 계산속도가 느려짐.
-        nodeCountX = Mathf.CeilToInt(worldSize.x / nodeSize);
-        nodeCountY = Mathf.CeilToInt(worldSize.y / nodeSize);
+        nodeCountX = Mathf.CeilToInt((mapMaxX - mapMinX) / nodeSize);
+        nodeCountY = Mathf.CeilToInt((mapMaxY - mapMinY) / nodeSize);
 
         myNode = new Node[nodeCountX, nodeCountY];
 
@@ -29,10 +33,11 @@ public class Grid : MonoBehaviour
             for (int j = 0; j < nodeCountY; j++)
             {
                 //해당 노드의 좌표
-                Vector3 pos = new Vector3(i * nodeSize, j * nodeSize);
+                Vector3 pos = new Vector3(mapMinX + i * nodeSize, mapMinY + j * nodeSize);
 
                 //여러 겹의 타일이 겹쳐있어도, 장애물의 여부를 확인해주는 구문
-                Collider2D hit = Physics2D.OverlapBox(pos, new Vector2(nodeSize / 2, nodeSize / 2), 0, obstacle);
+                //nodeSize/2로 검사하는 것보다 전체의 길이를 검사하는 것이 더 정확
+                Collider2D hit = Physics2D.OverlapBox(pos, new Vector2(nodeSize, nodeSize), 0, obstacle);
 
                 bool noHit = false;
                 if (hit == null) noHit = true;
@@ -43,7 +48,7 @@ public class Grid : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(transform.position, new Vector3(worldSize.x, worldSize.y, 1));
+        Gizmos.DrawWireCube(transform.position, new Vector3((mapMaxX+mapMinX)/2, (mapMaxY+mapMinY)/2, 1));
         if (myNode != null)
         {
             foreach (Node no in myNode)

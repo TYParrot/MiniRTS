@@ -17592,13 +17592,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1777153055}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b660fef8b4f28634897145195938e672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapMinX: -15.3
+  mapMaxX: 15.3
+  mapMinY: -7
+  mapMaxY: 7
   worldSize: {x: 30.6, y: 14}
-  nodeSize: 0.5
+  nodeSize: 0.6
   obstacle:
     serializedVersion: 2
     m_Bits: 10112
