@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Unit
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -16,10 +18,10 @@ TagManager:
   - DebuffZone
   - Obstacles
   - Base
-  - 
-  - 
-  - 
-  - 
+  - Effect
+  - Unit
+  - Enemy
+  - Mouse
   - 
   - 
   - 
@@ -40,4 +42,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Map
+    uniqueID: 1404427913
+    locked: 0
+  - name: Effect
+    uniqueID: 328900807
+    locked: 0
+  - name: Unit
+    uniqueID: 1297856251
+    locked: 0
+  - name: Mouse
+    uniqueID: 1777165781
     locked: 0
