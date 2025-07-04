@@ -46,9 +46,47 @@ public class Grid : MonoBehaviour
         }
     }
 
+    public List<Node> SearchNeighborNode(Node node)
+    {
+        List<Node> nodeList = new List<Node>();
+
+        // 3x3 격자내에서 이동이 가능
+        for (int i = -1; i < 2; i++)
+        {
+            for (int j = -1; j < 2; j++)
+            {
+                // 자기 자신은 생략
+                if (i == 0 && j == 0) continue;
+
+                int newX = node.myX + i;
+                int newY = node.myY + j;
+
+                if (newX >= 0 && newY >= 0 && newX < nodeCountX && newY < nodeCountY)
+                {
+                    if(myNode[newX, newY].canWalk)
+                    nodeList.Add(myNode[newX, newY]);
+                }
+                    
+            }
+        }
+
+        return nodeList;
+    }
+
+    public Node GetNodeFromVector(Vector3 vector)
+    {
+        int posX = Mathf.RoundToInt((vector.x - mapMinX )/ nodeSize);
+        int posY = Mathf.RoundToInt((vector.y - mapMinY) / nodeSize);
+
+        posX = Mathf.Clamp(posX, 0, nodeCountX - 1);
+        posY = Mathf.Clamp(posY, 0, nodeCountY - 1);
+
+        return myNode[posX, posY];
+    }
+
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(transform.position, new Vector3((mapMaxX+mapMinX)/2, (mapMaxY+mapMinY)/2, 1));
+        Gizmos.DrawWireCube(transform.position, new Vector3((mapMaxX + mapMinX) / 2, (mapMaxY + mapMinY) / 2, 1));
         if (myNode != null)
         {
             foreach (Node no in myNode)
