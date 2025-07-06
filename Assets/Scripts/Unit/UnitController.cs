@@ -2,12 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Core.Path;
-using System.IO;
-using Unity.VisualScripting;
+using Core.Enemy;
 
 public class UnitController : MonoBehaviour
 {
     private GameObject unitMarker;
+    public event System.Action<UnitController> OnDead;
+
+    #region enemy
+    [SerializeField] LayerMask enemyLayer;
+    private GameObject currentTarget;
+    private float attackTimer;
+    #endregion
+
+
     #region inspector
     public UnitBaseStatsData unitStats;
     PathFinding path;
@@ -20,11 +28,20 @@ public class UnitController : MonoBehaviour
     private int defendence;
     private int damage;
     private int moveSpeed;
-    private int attackSpeed;
+    private float attackSpeed;
+    private float attackRange;
     #endregion
 
+    #region visual
     private Vector3 basicScale;
     private Vector3? targetPos;
+    #endregion
+
+    private enum UnitState
+    {
+        Idle, Moving, Attacking, Dead
+    }
+    private UnitState currentState;
 
     private void Awake()
     {
@@ -38,6 +55,26 @@ public class UnitController : MonoBehaviour
 
     void Update()
     {
+        switch (currentState)
+        {
+            case UnitState.Idle:
+                LookForEnemy();
+                break;
+
+            case UnitState.Moving:
+                LookForEnemy();
+                break;
+
+            case UnitState.Attacking:
+                AttackTarget();
+                break;
+
+            case UnitState.Dead:
+                //죽음 처리
+                //리스트에서 삭제
+                break;
+        }
+
         // Unit의 이동 제어
         if (targetPos.HasValue)
         {
@@ -52,7 +89,7 @@ public class UnitController : MonoBehaviour
             {
                 transform.localScale = basicScale;
             }
-            
+
         }
     }
 
@@ -77,6 +114,7 @@ public class UnitController : MonoBehaviour
         defendence = unitStats.Defendence;
         damage = unitStats.Damage;
         moveSpeed = unitStats.MoveSpeed;
+        attackRange = unitStats.AttackRange;
         attackSpeed = unitStats.AttackSpeed;
 
         basicScale = transform.localScale;
@@ -86,6 +124,9 @@ public class UnitController : MonoBehaviour
         {
             Debug.Log("찾지 못함");
         }
+
+        // 대기 상태로 세팅
+        currentState = UnitState.Idle;
     }
 
     //Unit이 이동할 수 있도록 targetPos를 업데이트
@@ -99,6 +140,9 @@ public class UnitController : MonoBehaviour
             List<Node> newWay = path.PathFind(transform.position, targetPos.Value);
             if (newWay != null)
             {
+                //이동 상태 시작
+                currentState = UnitState.Moving;
+
                 StopCoroutine("move");
                 myWay = newWay;
                 StartCoroutine("move");
@@ -143,6 +187,74 @@ public class UnitController : MonoBehaviour
             transform.position = Vector2.MoveTowards(pos2D, target2D, Time.deltaTime * moveSpeed);
             yield return null;
         }
-    
+
+    }
+
+
+    /// <summary>
+    /// 주변의 적을 인식하고, 공격 상태로 전환
+    /// 이동은 중지되므로, 목적지는 초기화
+    /// 길목에 적군이 있다면, 처치하지 않고서는 지나갈 수 없는 상태가 됨.
+    /// </summary>
+    void LookForEnemy()
+    {
+        Collider2D targetEnemy = Physics2D.OverlapCircle(transform.position, attackRange, enemyLayer);
+
+        if (targetEnemy != null)
+        {
+            currentTarget = targetEnemy.gameObject;
+            currentState = UnitState.Attacking;
+
+            // 이동 중이면 이동을 중지하고, 목적지를 초기화
+            targetPos = null;
+            myWay = null;
+            StopCoroutine("move");
+
+        }
+
+    }
+
+    /// <summary>
+    /// 적을 실제로 공격
+    /// </summary>
+    void AttackTarget()
+    {
+        // 적이 사망하면 Idle 상태로 전환 필요
+        if (currentTarget == null)
+        {
+            currentState = UnitState.Idle;
+            return;
+        }
+
+        attackTimer += Time.deltaTime;
+
+        if (attackTimer >= attackSpeed)
+        {
+            var enemy = currentTarget.GetComponent<EnemyController>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+            }
+
+            Debug.Log($"적군 {currentTarget.name}을 공격중!");
+            attackTimer = 0;
+        }
+    }
+
+    /// <summary>
+    /// 피격시 체력 감소
+    /// 0보다 작거나 같으면 사망 처리
+    /// </summary>
+    /// <param name="damage"></param>
+    public void TakeDamage(int damage)
+    {
+        hp -= damage;
+        if (hp <= 0)
+        {
+            currentState = UnitState.Dead;
+
+            OnDead?.Invoke(this);
+            Destroy(gameObject);
+        }
     }
 }

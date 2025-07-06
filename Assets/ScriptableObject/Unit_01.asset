@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a60fe05e8702aa845bec46b05bb10853, type: 3}
   m_Name: Unit_01
   m_EditorClassIdentifier: 
-  Hp: 5
+  Hp: 3
   Defendence: 0
-  Damage: 1
+  Damage: 2
   MoveSpeed: 1
+  AttackRange: 0.5
   AttackSpeed: 1
   cost:
     clay: 10
