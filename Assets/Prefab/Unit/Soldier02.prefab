@@ -192,7 +192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 8192
+    m_Bits: 9216
   unitStats: {fileID: 11400000, guid: 421a32fbe1296514ab2400cdee24900e, type: 2}
   type: 2
   projectilePrefab: {fileID: 8671972701028782592, guid: c677cf0567047ab4cb1376f32956641e, type: 3}

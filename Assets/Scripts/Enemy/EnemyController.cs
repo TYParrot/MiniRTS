@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Core.Common;
 using Core.Attack;
+using System;
 
 namespace Core.Enemy
 {
@@ -32,6 +33,10 @@ namespace Core.Enemy
         private enum EnemyState { Idle, Attacking, Dead }
         private EnemyState currentState;
         private float attackTimer;
+        
+        //static event이므로, 클래스 전체에 공유되는 이벤트
+        //구독도 단 한번이면 된다.
+        public static event Action OnEnemyKilled;
 
         void Start() {
             Init();
@@ -137,16 +142,22 @@ namespace Core.Enemy
 
     }
 
-
-
         // 피격시 체력 감소, 0보다 작거나 같으면 사망 처리
+        // 중복 호출 방지를 위해 currentState를 플래그 처리
         public void TakeDamage(int damage)
         {
+            if (currentState == EnemyState.Dead)
+            {
+                return;
+            }
+            
             hp = hp - (damage - defendence);
 
             if (hp <= 0)
             {
                 currentState = EnemyState.Dead;
+
+                OnEnemyKilled?.Invoke();
 
                 Destroy(gameObject);
             }
