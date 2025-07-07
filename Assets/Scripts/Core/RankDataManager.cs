@@ -12,6 +12,7 @@ namespace Core.Data
         public string playerName;
         public int kills;
         public string time;
+        public bool isClear;
     }
 
     [Serializable]
@@ -23,7 +24,7 @@ namespace Core.Data
     public class RankDataManager
     {
         private static List<RankData> rankList = new List<RankData>();
-        private static string filePath = System.IO.Path.Combine(Application.dataPath, "Data/RankData.json");
+        private static string filePath = System.IO.Path.Combine(Application.dataPath, "Data/Rank/RankData.json");
 
 
         private static RankDataManager _instance;
@@ -50,13 +51,14 @@ namespace Core.Data
         /// <param name="time"></param>
         /// <param name="kills"></param>
         /// <param name="name"></param>
-        public void SaveRank(string time, int kills, string name)
+        public void SaveRank(string time, int kills, string name, bool isClear)
         {
             rankList.Add(new RankData
             {
                 playerName = name,
                 kills = kills,
-                time = time
+                time = time,
+                isClear = isClear
             });
 
             var wrapper = new RankListWrapper { list = rankList };

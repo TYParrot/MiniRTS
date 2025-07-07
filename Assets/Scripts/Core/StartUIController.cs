@@ -20,7 +20,6 @@ namespace Core.StartUI
         [SerializeField] private Text rank;
 
         private RankDataManager rankManager;
-        private int idx = 0;
 
         private void Awake()
         {
@@ -48,15 +47,23 @@ namespace Core.StartUI
 
             foreach (var rankData in rankList)
             {
-                // 시간 파싱
-                var timeParts = rankData.time.Split(":");
-                int hour = int.Parse(timeParts[0]);
-                int min  = int.Parse(timeParts[1]);
-                int sec  = int.Parse(timeParts[2]);
-                int totalSec = hour * 3600 + min * 60 + sec;
+                bool isClear = rankData.isClear;
+                int totalSec = 0;
+                
+                // 클리어 여부를 통해 시간에 대한 보너스 점수 부여
+                if (isClear)
+                {
+                    // 시간 파싱
+                    var timeParts = rankData.time.Split(":");
+                    int hour = int.Parse(timeParts[0]);
+                    int min  = int.Parse(timeParts[1]);
+                    int sec  = int.Parse(timeParts[2]);
+                    totalSec = hour * 3600 + min * 60 + sec;
+
+                }
 
                 // 킬 수 반영
-                int finalScore = rankData.kills * 100 + ((1000 - totalSec) < 0 ? 0 : (1000 - totalSec));
+                int finalScore = rankData.kills * 100 + ((1000 - totalSec) == 1000 ? 0 : (1000 - totalSec));
 
                 scoredLists.Add((rankData.playerName, finalScore));
             }

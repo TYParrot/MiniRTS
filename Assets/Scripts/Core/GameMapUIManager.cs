@@ -216,6 +216,8 @@ namespace Core.GameUI
         public Text kills;
         private int killEnemy = 0;
         private bool isRunning = true;
+        //클리어 여부: 적군 기지 파괴(소요된 시간이 플러스 점수로 기입되지 않도록 사용할 변수)
+        private bool isClear = false;
 
         /// <summary>
         /// 시간과 킬 수, 유저 이름을 저장
@@ -240,7 +242,7 @@ namespace Core.GameUI
             //'Time:' 부분 삭제
             var rawTime = scoreTime.text.Split(" ").ToList();
 
-            dataManager.SaveRank(rawTime[1], killEnemy, userName.GetComponent<InputField>().text);
+            dataManager.SaveRank(rawTime[1], killEnemy, userName.GetComponent<InputField>().text, isClear);
 
             SceneChangeManager.ChangeTo("Start");
         }
