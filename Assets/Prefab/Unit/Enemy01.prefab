@@ -94,7 +94,9 @@ MonoBehaviour:
   enemyStats: {fileID: 11400000, guid: a52ba1f9bd17a0d44bef2dee522c31d5, type: 2}
   unitLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
+  type: 1
+  projectilePrefab: {fileID: 4638686870792810789, guid: cea3f03fefdd36045bfd59e62ef072b8, type: 3}
 --- !u!1 &3426936827015681841
 GameObject:
   m_ObjectHideFlags: 0

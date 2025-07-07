@@ -251,6 +251,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8192
   unitStats: {fileID: 11400000, guid: a52ba1f9bd17a0d44bef2dee522c31d5, type: 2}
+  type: 1
+  projectilePrefab: {fileID: 8671972701028782592, guid: c677cf0567047ab4cb1376f32956641e, type: 3}
 --- !u!61 &2524691428073638213
 BoxCollider2D:
   m_ObjectHideFlags: 0

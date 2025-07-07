@@ -22,7 +22,7 @@ TagManager:
   - Unit
   - Enemy
   - Mouse
-  - 
+  - Projectile
   - 
   - 
   - 
@@ -54,4 +54,7 @@ TagManager:
     locked: 0
   - name: Mouse
     uniqueID: 1777165781
+    locked: 0
+  - name: Projectile
+    uniqueID: 2516193289
     locked: 0

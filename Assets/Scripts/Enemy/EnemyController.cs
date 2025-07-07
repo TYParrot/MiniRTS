@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Core.Common;
+using Core.Attack;
 
 namespace Core.Enemy
 {
-    public class EnemyController : MonoBehaviour
+    public class EnemyController : MonoBehaviour, CommonInterface
     {
         #region stats
         private int hp;
@@ -18,6 +20,9 @@ namespace Core.Enemy
         #region inspector
         public UnitBaseStatsData enemyStats;
         [SerializeField] LayerMask unitLayer;
+        [SerializeField] private int type;
+        [SerializeField] private GameObject projectilePrefab;
+
         #endregion
 
         #region unit
@@ -92,7 +97,7 @@ namespace Core.Enemy
 
                 if (unit != null)
                 {
-                    unit.TakeDamage(damage);
+                    SpawnProjectile(unit);
                 }
 
                 attackTimer = 0;
@@ -100,17 +105,50 @@ namespace Core.Enemy
    
         }
 
+    /// <summary>
+    /// 발사체 생성 로직
+    /// </summary>
+    /// <param name="enemy"></param>
+    public void SpawnProjectile(UnitController unit)
+    {
+        if (projectilePrefab == null)
+        {
+            Debug.LogWarning("Projectile prefab이 지정되지 않았습니다!");
+            return;
+        }
+
+        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+
+        var projScript = projectile.GetComponent<Projectile>();
+        if (projScript != null)
+        {
+            projScript.Init(
+                unit.transform.position,
+                attackSpeed,
+                damage,
+                unitLayer
+            );
+        }
+
+        if (type == 2)
+        {
+            projectile.transform.localScale = new Vector3(2, 2, 2);
+        }
+
+    }
+
+
 
         // 피격시 체력 감소, 0보다 작거나 같으면 사망 처리
         public void TakeDamage(int damage)
         {
-            hp -= damage;
+            hp = hp - (damage - defendence);
 
             if (hp <= 0)
             {
                 currentState = EnemyState.Dead;
+
                 Destroy(gameObject);
-                Debug.Log("적군이 사망");
             }
         }
 

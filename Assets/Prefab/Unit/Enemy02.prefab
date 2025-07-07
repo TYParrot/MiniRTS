@@ -211,3 +211,5 @@ MonoBehaviour:
   unitLayer:
     serializedVersion: 2
     m_Bits: 4096
+  type: 2
+  projectilePrefab: {fileID: 4638686870792810789, guid: cea3f03fefdd36045bfd59e62ef072b8, type: 3}

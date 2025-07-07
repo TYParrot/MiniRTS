@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Core.Path;
 using Core.Enemy;
+using Core.Attack;
+using Core.Common;
 
-public class UnitController : MonoBehaviour
+public class UnitController : MonoBehaviour, CommonInterface
 {
     private GameObject unitMarker;
     public event System.Action<UnitController> OnDead;
@@ -21,6 +23,8 @@ public class UnitController : MonoBehaviour
     PathFinding path;
     private List<Node> myWay;
     private Node targetNode;
+    [SerializeField] private int type;
+    [SerializeField] private GameObject projectilePrefab;
     #endregion
 
     #region stats
@@ -233,13 +237,47 @@ public class UnitController : MonoBehaviour
             var enemy = currentTarget.GetComponent<EnemyController>();
             if (enemy != null)
             {
-                enemy.TakeDamage(damage);
+                // 발사체 생성 및 공격
+                SpawnProjectile(enemy);
             }
 
-            Debug.Log($"적군 {currentTarget.name}을 공격중!");
             attackTimer = 0;
         }
     }
+
+    /// <summary>
+    /// 발사체 생성 로직
+    /// </summary>
+    /// <param name="enemy"></param>
+    public void SpawnProjectile(EnemyController enemy)
+    {
+        if (projectilePrefab == null)
+        {
+            Debug.LogWarning("Projectile prefab이 지정되지 않았습니다!");
+            return;
+        }
+
+        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+
+        var projScript = projectile.GetComponent<Projectile>();
+        if (projScript != null)
+        {
+            projScript.Init(
+                enemy.transform.position,
+                attackSpeed,
+                damage,
+                enemyLayer
+            );
+        }
+
+        if (type == 2)
+        {
+            projectile.transform.localScale = new Vector3(2, 2, 2);
+        }
+
+    }
+
+
 
     /// <summary>
     /// 피격시 체력 감소
@@ -248,7 +286,8 @@ public class UnitController : MonoBehaviour
     /// <param name="damage"></param>
     public void TakeDamage(int damage)
     {
-        hp -= damage;
+        hp = hp - (damage - defendence);
+
         if (hp <= 0)
         {
             currentState = UnitState.Dead;
