@@ -13,7 +13,7 @@ namespace Core.Unit
 
         private List<UnitController> unitList = new List<UnitController>();
         // 외부 참조용
-        public IReadOnlyList<UnitController> units => unitList; 
+        public IReadOnlyList<UnitController> units => unitList;
 
 
         /// <summary>
@@ -29,11 +29,18 @@ namespace Core.Unit
             if (clone == null) return false;
 
             UnitController unit = clone.GetComponent<UnitController>();
+            // 사망시 처리 이벤트 등록
+            unit.OnDead += HandleUnitDead;
 
             if (unit == null) return false;
 
             unitList.Add(unit);
             return true;
+        }
+
+        private void HandleUnitDead(UnitController unit)
+        {
+            unitList.Remove(unit);
         }
             
     }

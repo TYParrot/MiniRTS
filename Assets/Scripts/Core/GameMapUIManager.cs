@@ -4,6 +4,10 @@ using UnityEngine;
 using Core.Data;
 using UnityEngine.UI;
 using Core.Unit;
+using Core.Util;
+using Core.Enemy;
+using System;
+using System.Linq;
 
 
 namespace Core.GameUI
@@ -13,15 +17,19 @@ namespace Core.GameUI
         private RunTimeDataManager resource;
         [SerializeField]
         private SpawnManager spawn;
+        private RankDataManager dataManager;
 
         void Start()
         {
             resource = RunTimeDataManager.Instance;
             resource.OnClayChanged += UpdateClayText;
             resource.OnGravelChanged += UpdateGravelText;
+
+            dataManager = RankDataManager.Instance;
         }
 
         #region resource
+        [Header("Resource")]
         private bool gravelClicked = false;
         [SerializeField] private GameObject gravelCoolDown;
         [SerializeField] private float gravelCoolTime = 3f; // 애니메이션 클립 수동으로 작성
@@ -79,7 +87,7 @@ namespace Core.GameUI
         #endregion
 
         #region Generation
-
+        [Header("Generation")]
         [SerializeField]
         private UnitBaseStatsData unit01;
         [SerializeField]
@@ -175,7 +183,80 @@ namespace Core.GameUI
             panel.SetActive(false);
             successCoroutine = null;
         }
+        #endregion
 
+        #region Time
+        [Header("Time")]
+        public Text time;
+        private float timer = 0f;
+
+        void Update()
+        {
+            if (!isRunning)
+            {
+                return;
+            }
+
+            timer += Time.deltaTime;
+
+            int minutes = (int)(timer / 60);
+            int seconds = (int)(timer % 60);
+            int milliseconds = (int)((timer * 100) % 100);
+
+            time.text = $"Time: {minutes:D2}:{seconds:D2}:{milliseconds:D2}";
+        }
+
+        #endregion
+
+        #region Exit
+        [Header("Exit_Score")]
+        public GameObject scorePanel;
+        public GameObject userName;
+        public Text scoreTime;
+        public Text kills;
+        private int killEnemy = 0;
+        private bool isRunning = true;
+        //클리어 여부: 적군 기지 파괴(소요된 시간이 플러스 점수로 기입되지 않도록 사용할 변수)
+        private bool isClear = false;
+
+        /// <summary>
+        /// 시간과 킬 수, 유저 이름을 저장
+        /// 유저 이름이 없을 경우 날짜와 시간으로 기본 세팅
+        /// 게임 맵 상의 시간이 더이상 흐르지 않도록 관련 변수 설정
+        /// </summary>
+        public void ExitBtn()
+        {
+            isRunning = false;
+
+            scoreTime.text = time.text;
+            kills.text = $"Kills: {killEnemy}";
+            var input = userName.GetComponent<InputField>();
+            input.text = $"{DateTime.Now.ToString("MM:dd:HH:mm")}";
+            scorePanel.SetActive(true);
+        }
+
+        //로비로 씬 전환
+        //작성된 점수와 사용자 정보를 dataManager에게 기록하도록 함.
+        public void GoToStart()
+        {
+            //'Time:' 부분 삭제
+            var rawTime = scoreTime.text.Split(" ").ToList();
+
+            dataManager.SaveRank(rawTime[1], killEnemy, userName.GetComponent<InputField>().text, isClear);
+
+            SceneChangeManager.ChangeTo("Start");
+        }
+
+        private void OnEnable()
+        {
+            EnemyController.OnEnemyKilled += HandleEnemyKilled;
+        }
+
+        private void HandleEnemyKilled()
+        {
+            killEnemy++;
+        }
+        
         #endregion
     }
 }

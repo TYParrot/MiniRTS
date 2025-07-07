@@ -556,48 +556,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RTS_Tiles_02_20
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4d24406501261234f9460d1a402a38d3
-      internalID: 747809563
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RTS_Tiles_02_21
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4a6453dcf4bbd47489cab71d90cb42ef
-      internalID: 612293138
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: RTS_Tiles_02_22
       rect:
         serializedVersion: 2
@@ -645,8 +603,8 @@ TextureImporter:
         serializedVersion: 2
         x: 16
         y: 16
-        width: 16
-        height: 16
+        width: 23
+        height: 19
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -661,34 +619,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RTS_Tiles_02_25
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6b12165409eefcf4a90672cd7d3f32da
-      internalID: -1090831349
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: RTS_Tiles_02_26
       rect:
         serializedVersion: 2
         x: 48
         y: 16
-        width: 16
-        height: 16
+        width: 22
+        height: 19
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -698,27 +635,6 @@ TextureImporter:
       bones: []
       spriteID: fe6362478591f7a4aa3e6fcff3a48947
       internalID: -1189460434
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RTS_Tiles_02_27
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2acc25804d7e086499f3fa84afa8bd9b
-      internalID: 1775708473
       vertices: []
       indices: 
       edges: []

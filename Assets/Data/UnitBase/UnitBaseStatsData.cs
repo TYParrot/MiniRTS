@@ -9,7 +9,8 @@ public class UnitBaseStatsData : ScriptableObject
     public int Defendence;
     public int Damage;
     public int MoveSpeed;
-    public int AttackSpeed;
+    public float AttackRange;
+    public float AttackSpeed;
 
     public ResourceCost cost;
 
