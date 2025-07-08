@@ -247,14 +247,23 @@ namespace Core.GameUI
             SceneChangeManager.ChangeTo("Start");
         }
 
+        //이벤트 등록
         private void OnEnable()
         {
             EnemyController.OnEnemyKilled += HandleEnemyKilled;
+            BaseController.OnEndGame += HandleGameOver;
         }
 
         private void HandleEnemyKilled()
         {
             killEnemy++;
+        }
+
+        // 적군 기지 파괴 = 게임이 완전히 끝
+        private void HandleGameOver()
+        {
+            killEnemy += 50;
+            ExitBtn();
         }
         
         #endregion

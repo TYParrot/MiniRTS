@@ -84,7 +84,7 @@ public class UnitController : MonoBehaviour, CommonInterface
         {
             // 이동 방향에 따른 반전 효과
             // 이동 상태에 따른 애니메이션 제어를 원하면 else 구문까지 추가하여 제어
-            if (transform.position.x > targetPos.Value.x)
+            if (transform.position.x >= targetPos.Value.x)
             {
                 Vector3 newScale = new Vector3(basicScale.x * -1, basicScale.y, basicScale.z);
                 transform.localScale = newScale;
@@ -238,10 +238,18 @@ public class UnitController : MonoBehaviour, CommonInterface
             if (enemy != null)
             {
                 // 발사체 생성 및 공격
-                SpawnProjectile(enemy);
+                SpawnProjectile(enemy.gameObject);
             }
 
-            attackTimer = 0;
+            var enemyBase = currentTarget.GetComponent<BaseController>();
+            if (enemyBase != null)
+            {
+
+                //적군 기지 공격
+                SpawnProjectile(enemyBase.gameObject);
+            }
+
+                attackTimer = 0;
         }
     }
 
@@ -249,7 +257,7 @@ public class UnitController : MonoBehaviour, CommonInterface
     /// 발사체 생성 로직
     /// </summary>
     /// <param name="enemy"></param>
-    public void SpawnProjectile(EnemyController enemy)
+    public void SpawnProjectile(GameObject enemy)
     {
         if (projectilePrefab == null)
         {

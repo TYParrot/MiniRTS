@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a60fe05e8702aa845bec46b05bb10853, type: 3}
-  m_Name: Unit_02
+  m_Name: Base
   m_EditorClassIdentifier: 
-  Hp: 5
+  Hp: 20
   Defendence: 1
-  Damage: 3
-  MoveSpeed: 2
-  AttackRange: 0.6
-  AttackSpeed: 0.8
+  Damage: 2
+  MoveSpeed: 0
+  AttackRange: 0.8
+  AttackSpeed: 0.6
   cost:
-    clay: 20
-    gravel: 5
-  unitPrefab: {fileID: 3171889597338619612, guid: 81fbdf99bedf2d2459748090267d0e15, type: 3}
+    clay: 0
+    gravel: 0
+  unitPrefab: {fileID: 0}
