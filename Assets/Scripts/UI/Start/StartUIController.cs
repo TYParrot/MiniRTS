@@ -20,6 +20,7 @@ namespace Core.StartUI
         [SerializeField] private Text rank;
 
         private RankDataManager rankManager;
+        private SoundManager sound;
 
         private void Awake()
         {
@@ -32,15 +33,20 @@ namespace Core.StartUI
         void Start()
         {
             rankManager = RankDataManager.Instance;
+            sound = SoundManager.Instance;
         }
 
         private void OnClickStartBtn()
         {
             SceneChangeManager.ChangeTo("GameMap");
+            sound.PlayUIBtnClick();
         }
 
         private void OnClickRankBtn()
         {
+            //음원 재생 먼저
+            sound.PlayUIBtnClick();
+
             var rankList = rankManager.GetRankList();
 
             var scoredLists = new List<(string name, int score)>();
@@ -78,6 +84,7 @@ namespace Core.StartUI
 
         private void OnClickExitBtn()
         {
+            sound.PlayUIBtnClick();
             
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
