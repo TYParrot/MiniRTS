@@ -16,8 +16,8 @@ MonoBehaviour:
   Defendence: 0
   Damage: 2
   MoveSpeed: 1
-  AttackRange: 0.5
-  AttackSpeed: 1
+  AttackRange: 0.8
+  AttackSpeed: 0.8
   cost:
     clay: 10
     gravel: 0

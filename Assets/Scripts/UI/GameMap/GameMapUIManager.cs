@@ -17,7 +17,8 @@ namespace Core.GameUI
         private RunTimeDataManager resource;
         [SerializeField]
         private SpawnManager spawn;
-        private RankDataManager dataManager;
+        private RankDataManager data;
+        private SoundManager sound;
 
         void Start()
         {
@@ -25,7 +26,9 @@ namespace Core.GameUI
             resource.OnClayChanged += UpdateClayText;
             resource.OnGravelChanged += UpdateGravelText;
 
-            dataManager = RankDataManager.Instance;
+            data = RankDataManager.Instance;
+
+            sound = SoundManager.Instance;
         }
 
         #region resource
@@ -40,6 +43,7 @@ namespace Core.GameUI
         public void ResourceBtn01()
         {
             resource.UpdateClayResource(clayIncreasing);
+            sound.PlayClayBtnClick();
         }
 
         // gravel 자원 생성(3초에 한번)
@@ -49,6 +53,7 @@ namespace Core.GameUI
             {
                 StartCoroutine(GravelCoolTime());
                 resource.UpdateGravelResource(gravelIncreasing);
+                sound.PlayGravelBtnClick();
             }
         }
 
@@ -104,11 +109,13 @@ namespace Core.GameUI
         public void GenerateBtn01()
         {
             TrySpawnUnit(unit01);
+            sound.PlayClayBtnClick();
         }
 
         public void GenerationBtn02()
         {
             TrySpawnUnit(unit02);
+            sound.PlayGravelBtnClick();
         }
 
         /// <summary>
@@ -242,19 +249,28 @@ namespace Core.GameUI
             //'Time:' 부분 삭제
             var rawTime = scoreTime.text.Split(" ").ToList();
 
-            dataManager.SaveRank(rawTime[1], killEnemy, userName.GetComponent<InputField>().text, isClear);
+            data.SaveRank(rawTime[1], killEnemy, userName.GetComponent<InputField>().text, isClear);
 
             SceneChangeManager.ChangeTo("Start");
         }
 
+        //이벤트 등록
         private void OnEnable()
         {
             EnemyController.OnEnemyKilled += HandleEnemyKilled;
+            BaseController.OnEndGame += HandleGameOver;
         }
 
         private void HandleEnemyKilled()
         {
             killEnemy++;
+        }
+
+        // 적군 기지 파괴 = 게임이 완전히 끝
+        private void HandleGameOver()
+        {
+            killEnemy += 50;
+            ExitBtn();
         }
         
         #endregion

@@ -23,7 +23,6 @@ namespace Core.Enemy
         [SerializeField] LayerMask unitLayer;
         [SerializeField] private int type;
         [SerializeField] private GameObject projectilePrefab;
-
         #endregion
 
         #region unit
@@ -53,7 +52,7 @@ namespace Core.Enemy
                     AttackUnit();
                     break;
                 case EnemyState.Dead:
-                    //죽음 처리
+                    //죽음 처리는 자동화됨.
                     break;
             }
         }
@@ -110,37 +109,37 @@ namespace Core.Enemy
    
         }
 
-    /// <summary>
-    /// 발사체 생성 로직
-    /// </summary>
-    /// <param name="enemy"></param>
-    public void SpawnProjectile(UnitController unit)
-    {
-        if (projectilePrefab == null)
+        /// <summary>
+        /// 발사체 생성 로직
+        /// </summary>
+        /// <param name="enemy"></param>
+        public void SpawnProjectile(UnitController unit)
         {
-            Debug.LogWarning("Projectile prefab이 지정되지 않았습니다!");
-            return;
+            if (projectilePrefab == null)
+            {
+                Debug.LogWarning("Projectile prefab이 지정되지 않았습니다!");
+                return;
+            }
+
+            GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+
+            var projScript = projectile.GetComponent<Projectile>();
+            if (projScript != null)
+            {
+                projScript.Init(
+                    unit.transform.position,
+                    attackSpeed,
+                    damage,
+                    unitLayer
+                );
+            }
+
+            if (type == 2)
+            {
+                projectile.transform.localScale = new Vector3(2, 2, 2);
+            }
+
         }
-
-        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-
-        var projScript = projectile.GetComponent<Projectile>();
-        if (projScript != null)
-        {
-            projScript.Init(
-                unit.transform.position,
-                attackSpeed,
-                damage,
-                unitLayer
-            );
-        }
-
-        if (type == 2)
-        {
-            projectile.transform.localScale = new Vector3(2, 2, 2);
-        }
-
-    }
 
         // 피격시 체력 감소, 0보다 작거나 같으면 사망 처리
         // 중복 호출 방지를 위해 currentState를 플래그 처리
