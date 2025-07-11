@@ -4,6 +4,7 @@ using Core.Common;
 using UnityEngine;
 using System;
 using Core.Attack;
+using Core.Effect;
 
 public class BaseController : MonoBehaviour, CommonInterface
 {
@@ -144,6 +145,9 @@ public class BaseController : MonoBehaviour, CommonInterface
         if (hp <= 0)
         {
             currentState = BaseState.Destry;
+
+            //Destroy 이펙트 재생
+            EffectManager.Instance.PlayDestryEffect(gameObject);
 
             OnEndGame?.Invoke();
             Destroy(gameObject);
