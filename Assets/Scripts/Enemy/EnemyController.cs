@@ -4,6 +4,7 @@ using UnityEngine;
 using Core.Common;
 using Core.Attack;
 using System;
+using Core.Effect;
 
 namespace Core.Enemy
 {
@@ -155,6 +156,9 @@ namespace Core.Enemy
             if (hp <= 0)
             {
                 currentState = EnemyState.Dead;
+
+                //Destroy 이펙트 재생
+                EffectManager.Instance.PlayDestryEffect(gameObject);
 
                 OnEnemyKilled?.Invoke();
 

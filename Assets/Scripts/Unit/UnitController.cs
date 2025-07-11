@@ -5,6 +5,7 @@ using Core.Path;
 using Core.Enemy;
 using Core.Attack;
 using Core.Common;
+using Core.Effect;
 
 public class UnitController : MonoBehaviour, CommonInterface
 {
@@ -299,6 +300,9 @@ public class UnitController : MonoBehaviour, CommonInterface
         if (hp <= 0)
         {
             currentState = UnitState.Dead;
+
+            //Destroy 이펙트 재생
+            EffectManager.Instance.PlayDestryEffect(gameObject);
 
             OnDead?.Invoke(this);
             Destroy(gameObject);
