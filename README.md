@@ -10,43 +10,93 @@ Unity: 2022.3.20f1
 <summary>📁 폴더 구조 보기</summary>
 
 ```plaintext
-AnimationControllers
-├── Mouse
-└── UI
-    ├── GameMap
-    └── Start
-Animations
-├── Mouse
-└── UI
-    ├── GameMap
-    └── Start
-Art
-├── Font
-├── Map
-│   └── map_tile
-│       ├── tiles_01
-│       └── tiles_02
-├── Mouse
-└── UI
-    ├── GameMap
-    └── Start
-Data
-├── Rank
-└── UnitBase
-Prefab
-├── Mouse
-└── Unit
-Scenes
-ScriptableObject
-Scripts
-├── Core
-│   └── PathFinding
-├── Enemy
-├── FX
-├── System
-├── UI
-│   ├── GameMap
-│   └── Start
-├── Unit
-└── Utilities
+└── Assets
+│   └── AnimationControllers
+│   │   └── Mouse
+│   │   └── UI
+│   │   │   └── GameMap
+│   │   │   └── Start
+│   └── Animations
+│   │   └── Mouse
+│   │   └── UI
+│   │   │   └── GameMap
+│   │   │   └── Start
+│   └── Art
+│   │   └── Font
+│   │   └── Map
+│   │   │   └── map_tile
+│   │   │   │   └── tiles_01
+│   │   │   │   └── tiles_02
+│   │   └── Mouse
+│   │   └── UI
+│   │   │   └── GameMap
+│   │   │   └── Start
+│   └── AssetStore
+│   │   └── Pixel Art
+│   │   │   └── PixelArtRPGVFXLite
+│   │   │   │   └── Animations
+│   │   │   │   └── Prefabs
+│   │   │   │   │   └── Electricity
+│   │   │   │   │   └── Explosion
+│   │   │   │   │   └── Fire
+│   │   │   │   │   └── FireWork
+│   │   │   │   │   └── Holy
+│   │   │   │   │   └── Void
+│   │   │   │   │   └── Water
+│   │   │   │   │   └── Wind
+│   │   │   │   └── Scene
+│   │   │   │   └── SpriteVersion
+│   │   │   │   └── Textures
+│   │   │   │   │   └── Electricity
+│   │   │   │   │   └── Explosion
+│   │   │   │   │   └── Fire
+│   │   │   │   │   └── FireWork
+│   │   │   │   │   └── Holy
+│   │   │   │   │   └── Void
+│   │   │   │   │   └── Water
+│   │   │   │   │   └── Wind
+│   └── Data
+│   │   └── Rank
+│   │   └── UnitBase
+│   │   │   ├── UnitBaseStatsData.cs
+│   └── Prefab
+│   │   └── Attack
+│   │   └── Base
+│   │   └── Mouse
+│   │   └── Unit
+│   └── Scenes
+│   └── ScriptableObject
+│   └── Scripts
+│   │   └── Common
+│   │   │   ├── CommonInterface.cs
+│   │   └── Core
+│   │   │   ├── RankDataManager.cs
+│   │   │   ├── RunTimeDataManager.cs
+│   │   │   ├── SoundManager.cs
+│   │   │   └── PathFinding
+│   │   │   │   ├── Grid.cs
+│   │   │   │   ├── Node.cs
+│   │   │   │   ├── PathFinding.cs
+│   │   └── Enemy
+│   │   │   ├── BaseController.cs
+│   │   │   ├── EnemyController.cs
+│   │   │   ├── EnemySpawner.cs
+│   │   │   ├── Projectile.cs
+│   │   └── FX
+│   │   │   ├── AutoDestroyEffect.cs
+│   │   │   ├── CameraMouseController.cs
+│   │   │   ├── EffectController.cs
+│   │   │   ├── EffectManager.cs
+│   │   └── System
+│   │   │   ├── SceneChanageManager.cs
+│   │   └── UI
+│   │   │   └── GameMap
+│   │   │   │   ├── GameMapUIManager.cs
+│   │   │   └── Start
+│   │   │   │   ├── StartUIController.cs
+│   │   └── Unit
+│   │   │   ├── RTSUnitController.cs
+│   │   │   ├── SpawnManager.cs
+│   │   │   ├── UnitController.cs
+│   └── Sound
 
