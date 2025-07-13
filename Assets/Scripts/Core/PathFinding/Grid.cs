@@ -13,6 +13,8 @@ namespace Core.Path
 
         public float nodeSize;
         [SerializeField] Node[,] myNode;
+        //적군 랜덤 spawn을 위해 MyNode 참조
+        public Node[,] MyNode { get { return myNode; } private set { myNode = value; } }
         int nodeCountX;
         int nodeCountY;
         //장애물인지 아닌지 구분해 줄 LayerMask

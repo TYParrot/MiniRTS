@@ -17090,6 +17090,7 @@ GameObject:
   - component: {fileID: 1777153062}
   - component: {fileID: 1777153063}
   - component: {fileID: 1777153064}
+  - component: {fileID: 1777153065}
   m_Layer: 0
   m_Name: ===Manager===
   m_TagString: Untagged
@@ -17150,7 +17151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 628e41aca20101a4ca6f22007f9728ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 8
   mapMinX: -15.3
   mapMaxX: 15.3
   mapMinY: -7
@@ -17208,6 +17209,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyEffect: {fileID: 8823377771807317439, guid: aea3ebf00862c714c9d625de0c601af3, type: 3}
   effectParent: {fileID: 275648603}
+--- !u!114 &1777153065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777153055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd73cf621112a844d81ee40b4e0f6936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grid: {fileID: 1777153062}
+  enemyPrefab1: {fileID: 2567077621282024122, guid: 5e8c2cee7858c044cba96496101c6afc, type: 3}
+  enemyPrefab2: {fileID: 6317085923482708099, guid: 176d16b2fa7f2664da013fa3d08f96c1, type: 3}
+  enemyParent: {fileID: 1085183874}
+  enemyCount: 20
 --- !u!1 &1822310150
 GameObject:
   m_ObjectHideFlags: 0
